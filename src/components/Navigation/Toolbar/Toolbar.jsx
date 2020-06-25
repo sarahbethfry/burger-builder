@@ -2,10 +2,13 @@ import React from "react";
 import classes from "./Toolbar.css";
 import Logo from "../../Logo/Logo";
 import NavItems from "../NavItems/NavItems";
+import Button from "../../UI/Button/Button";
 
 const toolbar = (props) => (
   <header className={classes.Toolbar}>
-    <div>Menu</div>
+    <Button clicked={props.openSideDrawer} btnType="Menu">
+      Menu
+    </Button>
     <Logo height="80%" />
     <nav className={classes.DesktopOnly}>
       <NavItems />
