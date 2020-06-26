@@ -7,7 +7,9 @@ import Button from "../../UI/Button/Button";
 const toolbar = (props) => (
   <header className={classes.Toolbar}>
     <Button clicked={props.openSideDrawer} btnType="Menu">
-      Menu
+      <div></div>
+      <div></div>
+      <div></div>
     </Button>
     <Logo height="80%" />
     <nav className={classes.DesktopOnly}>
