@@ -29,6 +29,9 @@ class BurgerBuilder extends Component {
     showSpinner: false,
   };
 
+  componentDidMount() {
+    console.log(this.props);
+  }
   updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
       .map((igKey) => {
@@ -79,30 +82,44 @@ class BurgerBuilder extends Component {
   };
 
   checkoutContinueHandler = () => {
-    // alert("You Continue!");
-    this.setState({ showSpinner: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Sarah Fry",
-        address: {
-          street: "Test St.",
-          zipCode: "99339",
-          country: "United States",
-        },
-        email: "test@test.com",
-      },
-      deliveryMethod: "Same Day",
-    };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ showSpinner: false, checkingOut: false });
-      })
-      .catch((error) =>
-        this.setState({ showSpinner: false, checkingOut: false })
+    //   // alert("You Continue!");
+    //   this.setState({ showSpinner: true });
+    //   const order = {
+    //     ingredients: this.state.ingredients,
+    //     price: this.state.totalPrice,
+    //     customer: {
+    //       name: "Sarah Fry",
+    //       address: {
+    //         street: "Test St.",
+    //         zipCode: "99339",
+    //         country: "United States",
+    //       },
+    //       email: "test@test.com",
+    //     },
+    //     deliveryMethod: "Same Day",
+    //   };
+    //   axios
+    //     .post("/orders.json", order)
+    //     .then((response) => {
+    //       this.setState({ showSpinner: false, checkingOut: false });
+    //     })
+    //     .catch((error) =>
+    //       this.setState({ showSpinner: false, checkingOut: false })
+    //     );
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
       );
+    }
+    const queryString = queryParams.join("&");
+
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString,
+    });
   };
 
   modalClosed = () => {
