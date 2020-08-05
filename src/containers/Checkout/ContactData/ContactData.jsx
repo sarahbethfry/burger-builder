@@ -3,14 +3,53 @@ import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import axios from "../../../axios-orders";
 import classes from "./ContactData.css";
+import Forms from "../../../components/UI/Forms/Forms";
 
 class ContactData extends Component {
   state = {
-    name: "",
-    email: "",
-    address: {
-      street: "",
-      zipCode: "",
+    orderForm: {
+      name: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Your Name",
+        },
+        value: "",
+      },
+      email: {
+        elementType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Your Email",
+        },
+        value: "",
+      },
+      street: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Your Street",
+        },
+        value: "",
+      },
+      zipCode: {
+        elementType: "input",
+        elementConfig: {
+          type: "text",
+          placeholder: "Your Zip",
+        },
+        value: "",
+      },
+      deliveryMethod: {
+        elementType: "select",
+        elementConfig: {
+          options: [
+            { value: "fastest", displayValue: "Fastest" },
+            { value: "cheapest", displayValue: "Cheapest" },
+          ],
+        },
+        value: "",
+      },
     },
     checkingOut: false,
   };
@@ -18,19 +57,14 @@ class ContactData extends Component {
   orderHandler = (event) => {
     event.preventDefault();
     this.setState({ checkingOut: true });
+    const formData = {};
+    for (let formInput in this.state.orderForm) {
+      formData[formInput] = this.state.orderForm[formInput].value;
+    }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: "Sarah Fry",
-        address: {
-          street: "Test St.",
-          zipCode: "99339",
-          country: "United States",
-        },
-        email: "test@test.com",
-      },
-      deliveryMethod: "Same Day",
+      orderData: formData,
     };
     axios
       .post("/orders.json", order)
@@ -41,37 +75,36 @@ class ContactData extends Component {
       .catch((error) => this.setState({ checkingOut: false }));
   };
 
+  formChangedHandler = (event, inputIdentifier) => {
+    const updatedOrder = {
+      ...this.state.orderForm,
+    };
+    const updatedFormElement = { ...updatedOrder[inputIdentifier] };
+    updatedFormElement.value = event.target.value;
+    updatedOrder[inputIdentifier] = updatedFormElement;
+    this.setState({ orderForm: updatedOrder });
+  };
+
   render() {
+    const formElementsArray = [];
+    for (let key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key],
+      });
+    }
     let form = (
-      <form>
-        <input
-          className={classes.Input}
-          type="text"
-          name="name"
-          placeholder="Your Name"
-        />
-        <input
-          className={classes.Input}
-          type="email"
-          name="email"
-          placeholder="Your Email"
-        />
-        <input
-          className={classes.Input}
-          type="text"
-          name="street"
-          placeholder="Your Street"
-        />
-        <input
-          className={classes.Input}
-          type="text"
-          name="zipCode"
-          placeholder="Your Zip Code"
-        />
-        <Button clicked={this.orderHandler} btnType="Success">
-          {" "}
-          Order{" "}
-        </Button>
+      <form onSubmit={this.orderHandler}>
+        {formElementsArray.map((formElement) => (
+          <Forms
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={(event) => this.formChangedHandler(event, formElement.id)}
+          />
+        ))}
+        <Button btnType="Success"> Order </Button>
       </form>
     );
     if (this.state.checkingOut) {
