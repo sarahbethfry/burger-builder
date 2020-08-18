@@ -30,7 +30,7 @@ class BurgerBuilder extends Component {
         return sum + el;
       }, 0);
 
-    this.setState({ purchase: sum > 0 });
+    return sum > 0;
   };
 
   checkOutHandler = () => {
@@ -38,21 +38,7 @@ class BurgerBuilder extends Component {
   };
 
   checkoutContinueHandler = () => {
-    const queryParams = [];
-    for (let i in this.state.ingredients) {
-      queryParams.push(
-        encodeURIComponent(i) +
-          "=" +
-          encodeURIComponent(this.state.ingredients[i])
-      );
-    }
-    queryParams.push("price=" + this.state.totalPrice);
-    const queryString = queryParams.join("&");
-
-    this.props.history.push({
-      pathname: "/checkout",
-      search: "?" + queryString,
-    });
+    this.props.history.push("/checkout");
   };
 
   modalClosed = () => {
@@ -87,7 +73,7 @@ class BurgerBuilder extends Component {
           ingredientAdded={this.props.addedIngredient}
           ingredientRemoved={this.props.removedIngredient}
           disabled={disabledInfo}
-          purchase={this.state.purchase}
+          purchase={this.updatePurchaseState(this.props.ings)}
           price={this.props.price}
           checkOut={this.checkOutHandler}
         />
