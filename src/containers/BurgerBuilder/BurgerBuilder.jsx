@@ -6,7 +6,7 @@ import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner.jsx";
-import * as actionTypes from "../../store/actions.jsx";
+import * as action from "../../store/actions/index.jsx";
 // import axios from "../../axios-orders";
 
 // import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler.jsx";
@@ -91,13 +91,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addedIngredient: (ingName) =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
-    removedIngredient: (ingName) =>
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingName,
-      }),
+    addedIngredient: (ingName) => dispatch(action.addIngredient(ingName)),
+    removedIngredient: (ingName) => dispatch(action.removeIngredient(ingName)),
   };
 };
 
