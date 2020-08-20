@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
 import Aux from "../../hoc/Aux";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
@@ -7,9 +8,6 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner.jsx";
 import * as action from "../../store/actions/index.jsx";
-// import axios from "../../axios-orders";
-
-// import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler.jsx";
 
 class BurgerBuilder extends Component {
   state = {
@@ -21,6 +19,7 @@ class BurgerBuilder extends Component {
   componentDidMount() {
     console.log(this.props);
   }
+
   updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
       .map((igKey) => {
@@ -84,8 +83,8 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
   };
 };
 
