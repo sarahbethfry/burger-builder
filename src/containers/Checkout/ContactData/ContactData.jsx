@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
-
+import axios from "../../../axios-orders";
 import classes from "./ContactData.css";
 import Forms from "../../../components/UI/Forms/Forms";
-import * as action from "../../../store/actions/index";
 
 class ContactData extends Component {
   state = {
@@ -53,20 +51,28 @@ class ContactData extends Component {
         value: "",
       },
     },
+    checkingOut: false,
   };
 
   orderHandler = (event) => {
     event.preventDefault();
+    this.setState({ checkingOut: true });
     const formData = {};
     for (let formInput in this.state.orderForm) {
       formData[formInput] = this.state.orderForm[formInput].value;
     }
     const order = {
-      ingredients: this.props.ings,
+      ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: formData,
     };
-    this.props.onOrderSubmit(order);
+    axios
+      .post("/orders.json", order)
+      .then((response) => {
+        this.setState({ checkingOut: false });
+        this.props.history.push("/");
+      })
+      .catch((error) => this.setState({ checkingOut: false }));
   };
 
   formChangedHandler = (event, inputIdentifier) => {
@@ -101,7 +107,7 @@ class ContactData extends Component {
         <Button btnType="Success"> Order </Button>
       </form>
     );
-    if (this.props.loading) {
+    if (this.state.checkingOut) {
       form = <Spinner />;
     }
     return (
@@ -113,18 +119,4 @@ class ContactData extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    ings: state.burgerBuilder.ingredients,
-    price: state.burgerBuilder.totalPrice,
-    loading: state.order.loading,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onOrderSubmit: (orderData) => dispatch(action.submitOrder(orderData)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+export default ContactData;
