@@ -16,8 +16,8 @@ class BurgerBuilder extends Component {
     showSpinner: false,
   };
 
-  componentWillMount() {
-    this.props.resetPrice();
+  componentDidMount() {
+    this.props.resetBurger();
   }
 
   updatePurchaseState = (ingredients) => {
@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     addedIngredient: (ingName) => dispatch(action.addIngredient(ingName)),
     removedIngredient: (ingName) => dispatch(action.removeIngredient(ingName)),
     afterCheckoutRedirect: () => dispatch(action.afterCheckoutRedirect()),
-    resetPrice: () => dispatch(action.resetPrice()),
+    resetBurger: () => dispatch(action.reset()),
   };
 };
 

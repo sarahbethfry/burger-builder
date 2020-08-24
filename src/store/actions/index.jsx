@@ -1,2 +1,2 @@
-export { addIngredient, removeIngredient, resetPrice } from "./burgerBuilder";
-export { submitOrder, afterCheckoutRedirect } from "./order";
+export { addIngredient, removeIngredient, reset } from "./burgerBuilder";
+export { submitOrder, afterCheckoutRedirect, fetchOrders } from "./order";
