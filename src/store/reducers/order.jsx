@@ -3,10 +3,16 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   orders: [],
   loading: false,
+  redirect: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.AFTER_CHECKOUT_REDIRECT:
+      return {
+        ...state,
+        redirect: false,
+      };
     case actionTypes.SUBMIT_ORDER_START:
       return {
         ...state,
@@ -20,6 +26,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        redirect: true,
         orders: state.orders.concat(newOrder),
       };
     case actionTypes.CHECKOUT_FAIL:

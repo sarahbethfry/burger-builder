@@ -16,8 +16,8 @@ class BurgerBuilder extends Component {
     showSpinner: false,
   };
 
-  componentDidMount() {
-    console.log(this.props);
+  componentWillMount() {
+    this.props.resetPrice();
   }
 
   updatePurchaseState = (ingredients) => {
@@ -37,6 +37,7 @@ class BurgerBuilder extends Component {
   };
 
   checkoutContinueHandler = () => {
+    this.props.afterCheckoutRedirect();
     this.props.history.push("/checkout");
   };
 
@@ -92,6 +93,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addedIngredient: (ingName) => dispatch(action.addIngredient(ingName)),
     removedIngredient: (ingName) => dispatch(action.removeIngredient(ingName)),
+    afterCheckoutRedirect: () => dispatch(action.afterCheckoutRedirect()),
+    resetPrice: () => dispatch(action.resetPrice()),
   };
 };
 

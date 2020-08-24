@@ -13,3 +13,9 @@ export const removeIngredient = (name) => {
     ingredientName: name,
   };
 };
+
+export const resetPrice = () => {
+  return {
+    type: actionTypes.RESET_PRICE,
+  };
+};

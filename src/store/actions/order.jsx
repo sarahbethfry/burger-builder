@@ -29,10 +29,16 @@ export const submitOrder = (orderData) => {
       .post("/orders.json", orderData)
       .then((response) => {
         console.log(response);
-        dispatch(checkoutSuccess(response.data, orderData));
+        dispatch(checkoutSuccess(response.data.name, orderData));
       })
       .catch((error) => {
         dispatch(checkoutFail(error));
       });
+  };
+};
+
+export const afterCheckoutRedirect = () => {
+  return {
+    type: actionTypes.AFTER_CHECKOUT_REDIRECT,
   };
 };
