@@ -1,13 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import { createStore, applyMiddleware, combineReducers } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import burgerBuilderReducer from "./store/reducers/burgerBuilder";
+import orderReducer from "./store/reducers/order";
+import "./index.css";
+
+const rootReducer = combineReducers({
+  burgerBuilder: burgerBuilderReducer,
+  order: orderReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById("root")
 );
 
