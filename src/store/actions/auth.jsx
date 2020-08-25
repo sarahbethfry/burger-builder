@@ -30,7 +30,7 @@ export const isAuth = (email, password, isSignup) => {
       password: password,
       returnSecureToken: true,
     };
-    const url =
+    let url =
       "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBOfNOE5nGEaNz1GMtosblBGUoQgp5Fcd0";
     if (!isSignup) {
       url =
@@ -44,7 +44,7 @@ export const isAuth = (email, password, isSignup) => {
       })
       .catch((err) => {
         console.log(err);
-        dispatch(authFail(err));
+        dispatch(authFail(err.res.error.message));
       });
   };
 };
