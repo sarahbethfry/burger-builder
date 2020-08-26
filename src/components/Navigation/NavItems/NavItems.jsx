@@ -5,8 +5,12 @@ import classes from "./NavItems.css";
 const navItems = (props) => (
   <ul className={classes.NavItems}>
     <NavItem link="/">Burger Builder</NavItem>
-    <NavItem link="/orders"> Orders</NavItem>
-    <NavItem link="/auth"> Sign Up/ Sign In </NavItem>
+    {props.isAuthenticated ? <NavItem link="/orders"> Orders</NavItem> : null}
+    {!props.isAuthenticated ? (
+      <NavItem link="/auth"> Sign In </NavItem>
+    ) : (
+      <NavItem link="/logout"> Log Out </NavItem>
+    )}
   </ul>
 );
 
