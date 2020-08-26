@@ -92,14 +92,12 @@ class Auth extends Component {
     this.props.auth(
       this.state.controls.email.value,
       this.state.controls.password.value,
-      this.state.controls.isSignup
+      this.state.isSignup
     );
   };
 
   switchAuthModeHandler = () => {
-    this.setState((prevState) => {
-      return { isSignup: !prevState.isSignup };
-    });
+    this.setState({ isSignup: !this.state.isSignup });
   };
 
   render() {
