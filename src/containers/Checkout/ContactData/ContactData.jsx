@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
-
 import classes from "./ContactData.css";
 import Forms from "../../../components/UI/Forms/Forms";
-import * as action from "../../../store/actions/index";
+import * as actions from "../../../store/actions/index";
 
 class ContactData extends Component {
   state = {
@@ -53,6 +53,7 @@ class ContactData extends Component {
         value: "",
       },
     },
+    checkingOut: false,
   };
 
   orderHandler = (event) => {
@@ -65,8 +66,9 @@ class ContactData extends Component {
       ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData,
+      userId: this.props.userId,
     };
-    this.props.onOrderSubmit(order);
+    this.props.onOrderSubmit(order, this.props.token);
   };
 
   formChangedHandler = (event, inputIdentifier) => {
@@ -118,12 +120,15 @@ const mapStateToProps = (state) => {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
+    token: state.auth.token,
+    userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderSubmit: (orderData) => dispatch(action.submitOrder(orderData)),
+    onOrderSubmit: (orderData, token) =>
+      dispatch(actions.submitOrder(orderData, token)),
   };
 };
 
