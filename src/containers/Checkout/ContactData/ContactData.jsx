@@ -6,6 +6,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import classes from "./ContactData.css";
 import Forms from "../../../components/UI/Forms/Forms";
 import * as actions from "../../../store/actions/index";
+import { checkValidity } from "../../../shared/validation";
 
 class ContactData extends Component {
   state = {
@@ -17,6 +18,11 @@ class ContactData extends Component {
           placeholder: "Your Name",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -25,6 +31,12 @@ class ContactData extends Component {
           placeholder: "Your Email",
         },
         value: "",
+        validation: {
+          required: true,
+          isEmail: true,
+        },
+        valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -33,6 +45,11 @@ class ContactData extends Component {
           placeholder: "Your Street",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       zipCode: {
         elementType: "input",
@@ -41,6 +58,14 @@ class ContactData extends Component {
           placeholder: "Your Zip",
         },
         value: "",
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5,
+          isNumeric: true,
+        },
+        valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -50,10 +75,12 @@ class ContactData extends Component {
             { value: "cheapest", displayValue: "Cheapest" },
           ],
         },
-        value: "",
+        value: "fastest",
+        validation: {},
+        valid: true,
       },
     },
-    checkingOut: false,
+    formIsValid: false,
   };
 
   orderHandler = (event) => {
@@ -77,8 +104,18 @@ class ContactData extends Component {
     };
     const updatedFormElement = { ...updatedOrder[inputIdentifier] };
     updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
     updatedOrder[inputIdentifier] = updatedFormElement;
-    this.setState({ orderForm: updatedOrder });
+
+    let formIsValid = true;
+    for (let inputIdentifier in updatedOrder) {
+      formIsValid = updatedOrder[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({ orderForm: updatedOrder, formIsValid: formIsValid });
   };
 
   render() {
