@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Order from "../../components/Order/Order";
 import * as actions from "../../store/actions/index";
-import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Orders extends Component {
   componentDidMount() {
@@ -10,8 +9,6 @@ class Orders extends Component {
   }
 
   render() {
-    = <Spinner />;
-    if (!this.props.loading) {
     let orders = this.props.orders.map((order) => (
       <Order
         key={order.id}
