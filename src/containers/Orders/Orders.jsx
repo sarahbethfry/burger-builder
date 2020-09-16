@@ -9,11 +9,8 @@ class Orders extends Component {
   }
 
   render() {
-<<<<<<< HEAD
-=======
     // = <Spinner />;
     // if (!this.props.loading) {
->>>>>>> 69d5f43e23448213be49f4f8d3ca85ae0b679fba
     let orders = this.props.orders.map((order) => (
       <Order
         key={order.id}
